@@ -40,7 +40,6 @@ int main(){
 	wait();
 	sleep(30);
 	printf(1, "Child %d ends at %d\n", getpid(),endTime-beginTime);
-
 	
 	exit();
 }

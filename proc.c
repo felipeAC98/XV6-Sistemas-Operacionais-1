@@ -201,13 +201,13 @@ fork(void)
     np->state = UNUSED;
     return -1;
   }
-  np->sz = curproc->sz; //Se conseguiu alocar, define o tamanho do novo processo igual ao do pai
-  np->parent = curproc; //Referencia para o processo pai
-  *np->tf = *curproc->tf; //Igualando as pilhas dos dois processos 
+  np->sz = curproc->sz;         //Se conseguiu alocar, define o tamanho do novo processo igual ao do pai
+  np->parent = curproc;         //Referencia para o processo pai
+  *np->tf = *curproc->tf;       //Igualando as pilhas dos dois processos 
 
 
   // Clear %eax so that fork returns 0 in the child.
-  np->tf->eax = 0; //Crianca ganha o eax como 0 (seu PID)
+  np->tf->eax = 0;              //Crianca ganha o eax como 0 (seu PID)
 
   for(i = 0; i < NOFILE; i++) //NOFILE =16
     if(curproc->ofile[i])     // OFILE = Struct com todos os arquivos abertos no processo (max = 16)
@@ -216,11 +216,11 @@ fork(void)
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name)); //copia do nome 
 
-  pid = np->pid; //recebe o valor de pid que esta na alocacao do processo que foi definido na allocproc
+  pid = np->pid;          //recebe o valor de pid que esta na alocacao do processo que foi definido na allocproc
 
   acquire(&ptable.lock);  //toma posse do processador
 
-  np->state = RUNNABLE; //estado de executavel
+  np->state = RUNNABLE;   //estado de executavel
 
   release(&ptable.lock); //toma posse do processador
 
@@ -351,9 +351,9 @@ cprintf("REINICIOU\n");
 
       //Utilizamos para descobrir a sequencia de estados de um processo
      if(p->pid>2 ){
-         //cprintf("PID: %d \n",p->pid);
+         cprintf("PID: %d \n",p->pid);
 
-         //cprintf("STATE: %d \n", p->state);
+         cprintf("STATE: %d \n", p->state);
         }//*/
 
       if(p->state != RUNNABLE)
@@ -377,7 +377,7 @@ cprintf("REINICIOU\n");
       release(&tickslock);
 
 
-      swtch(&(c->scheduler), p->context);
+      swtch(&(c->scheduler), p->context); //context eh a estrutura de registradores de um processo
       switchkvm();
       
       // Process is done running for now.

@@ -112,7 +112,7 @@ trap(struct trapframe *tf)
       //obtendo os ticks
       acquire(&tickslock);
 
-      atTicks= (ticks - myproc()->turnClock);
+      atTicks= (ticks - myproc()->turnClock); //ticks conta os clocs
 
 
       //Verificando se ja eh hora de trocar de processo
