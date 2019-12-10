@@ -105,10 +105,20 @@ trap(struct trapframe *tf)
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
 
-  int atTicks;
   if(myproc() && myproc()->state == RUNNING && tf->trapno == T_IRQ0+IRQ_TIMER ){
 
+    myproc()->runTime= myproc()->runTime+1; //a cada vez que um processo executar ele vai somar o tempo(clocks) que ficou executando
 
+    #ifdef DEFAULT
+
+      cprintf("DEFAULT\n");
+      yield();
+    
+    #elif FRR
+
+
+        cprintf("FRR\n");
+      int atTicks;
       //obtendo os ticks
       acquire(&tickslock);
 
@@ -123,8 +133,15 @@ trap(struct trapframe *tf)
       }
       else
        release(&tickslock);
+  
+
+    #elif FCFS
+      cprintf("FCFS\n");
+    #endif
+
 
   }
+
 
 //cprintf("Processo rodando PID: %d \n",myproc()->pid);
   // Check if the process has been killed since we yielded

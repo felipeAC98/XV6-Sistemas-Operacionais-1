@@ -51,6 +51,7 @@ struct proc {
   char name[16];               // Process name (debugging)
   int runTime;                 // 
   int turnClock;               //Initial tick number of a process
+  int beginTime;
 };
 
 // Process memory is laid out contiguously, low addresses first:

@@ -92,6 +92,7 @@ found:
   acquire(&tickslock);
   p->turnClock = ticks;
   release(&tickslock);
+  p->beginTime=p->turnClock;
 
 
   release(&ptable.lock);
@@ -218,11 +219,11 @@ fork(void)
 
   pid = np->pid;          //recebe o valor de pid que esta na alocacao do processo que foi definido na allocproc
 
-  acquire(&ptable.lock);  //toma posse do processador
+  acquire(&ptable.lock);  //toma posse da tabela de processos
 
   np->state = RUNNABLE;   //estado de executavel
 
-  release(&ptable.lock); //toma posse do processador
+  release(&ptable.lock); //devolve o controle da tabela de processos
 
   //cprintf("PID Current : %d \n",curproc->pid);
  // cprintf("PID New: %d \n",pid);
@@ -270,7 +271,7 @@ exit(void)
     }
   }
 
-  cprintf("Runtime: %d for %d process \n", myproc()->runTime,myproc()->pid);
+  //cprintf("Runtime: %d for %d process \n", myproc()->runTime,myproc()->pid);
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
@@ -347,13 +348,11 @@ cprintf("REINICIOU\n");
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 
-
-
       //Utilizamos para descobrir a sequencia de estados de um processo
      if(p->pid>2 ){
-         cprintf("PID: %d \n",p->pid);
+ //        cprintf("PID: %d \n",p->pid);
 
-         cprintf("STATE: %d \n", p->state);
+   //      cprintf("STATE: %d \n", p->state);
         }//*/
 
       if(p->state != RUNNABLE)
@@ -417,7 +416,7 @@ sched(void)
 
   acquire(&tickslock);
 
-  myproc()->runTime= myproc()->runTime+ticks-myproc()->turnClock;
+  myproc()->runTime= myproc()->runTime+ticks-myproc()->turnClock; //a cada vez que um processo executar ele vai somar o tempo(clocks) que ficou executando
 
   release(&tickslock);
 
